@@ -1068,3 +1068,998 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Protección de interfaz y disuasión sin bloquear botones ni campos de texto -->
+    <script>
+        (function() {
+            const isEditable = (el) => {
+                if (!el) return false;
+                return Boolean(el.closest('input, textarea, select, [contenteditable="true"]'));
+            };
+
+            document.addEventListener('contextmenu', function(e) {
+                if (!isEditable(e.target)) {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                const key = (e.key || '').toLowerCase();
+                if (
+                    e.key === 'F12' ||
+                    (e.ctrlKey && e.shiftKey && ['i', 'j', 'c', 'u'].includes(key)) ||
+                    (e.ctrlKey && ['u', 's', 'p'].includes(key)) ||
+                    (e.metaKey && e.altKey && ['i', 'j', 'c', 'u'].includes(key)) ||
+                    (e.metaKey && ['u', 's', 'p'].includes(key))
+                ) {
+                    e.preventDefault();
+                }
+            });
+        })();
+    </script>
+    
+    <!-- Medidas de Seguridad HTTP / CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob: https://i.postimg.cc https://images.unsplash.com https://placehold.co https://hits.sh; connect-src 'self' https://hits.sh; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- Etiquetas PWA para hacer instalable la web -->
+    <meta name="theme-color" content="#d97706">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="El Portal">
+    
+    <!-- Ícono para iOS y Android -->
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/bN7gPqK5/Whats-App-Image-2026-11-04-at-9-13-31-PM-(1).jpg">
+
+    <!-- Meta etiquetas Open Graph para compartir en WhatsApp, Facebook, etc. -->
+    <meta property="og:title" content="Restaurante El Portal - Sabor y tradición desde 1999">
+    <meta property="og:description" content="Conoce nuestra carta, cortes a la parrilla, pizzas artesanales y arma tu pedido directo por WhatsApp.">
+    <meta property="og:image" content="https://i.postimg.cc/bN7gPqK5/Whats-App-Image-2026-11-04-at-9-13-31-PM-(1).jpg">
+    <meta property="og:url" content="https://soyconectaplus.com/elportalpuertoberrio/">
+    <meta property="og:type" content="website">
+    
+    <!-- Manifest incrustado como data URI -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Restaurante%20El%20Portal%22%2C%22short_name%22%3A%22El%20Portal%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%22%2C%22background_color%22%3A%22%23111827%22%2C%22theme_color%22%3A%22%23d97706%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fi.postimg.cc%2FbN7gPqK5%2FWhats-App-Image-2026-11-04-at-9-13-31-PM-%281%29.jpg%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fjpeg%22%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fi.postimg.cc%2FbN7gPqK5%2FWhats-App-Image-2026-11-04-at-9-13-31-PM-%281%29.jpg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fjpeg%22%7D%5D%7D">
+    
+    <title>Tarjeta Digital - Restaurante El Portal</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Biblioteca para generar el código QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        input, textarea, select {
+            -webkit-user-select: text;
+            user-select: text;
+        }
+        img {
+            -webkit-user-drag: none;
+        }
+        .font-logo {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+        }
+        
+        .pulse-effect {
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.7);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(217, 119, 6, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(217, 119, 6, 0); }
+        }
+        
+        .menu-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .menu-scrollbar::-webkit-scrollbar-track {
+            background: #1F2937;
+        }
+        .menu-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #D97706;
+            border-radius: 10px;
+            border: 2px solid #1F2937;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 md:bg-gray-200 md:flex md:items-center md:justify-center min-h-screen">
+
+    <main class="w-full md:max-w-sm bg-gradient-to-b from-gray-800 to-black md:shadow-2xl text-center text-white md:rounded-3xl min-h-screen md:min-h-0 relative overflow-hidden border border-gray-700 md:border-none">
+        
+        <!-- Encabezado con imagen elegante y recorte geométrico -->
+        <div class="bg-amber-600 p-1" style="clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);">
+            <div class="relative">
+                <img src="https://i.postimg.cc/dVcfBRtj/Whats-App-Image-2026-11-04-at-9-45-43-PM.jpg" 
+                     alt="Experiencia El Portal" 
+                     class="w-full h-56 object-cover object-center block"
+                     onerror="this.onerror=null;this.src='https://placehold.co/1000x560/111827/FBBF24?text=El+Portal';"
+                     style="clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);">
+                <div class="absolute inset-0 bg-black bg-opacity-50 pointer-events-none" style="clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);"></div>
+            </div>
+        </div>
+
+        <div class="relative -mt-16 z-10 pointer-events-none">
+            <div class="relative w-32 h-32 mx-auto z-10">
+                <div class="w-full h-full rounded-full border-4 border-amber-400 overflow-hidden bg-black shadow-xl flex items-center justify-center">
+                    <img src="https://i.postimg.cc/bN7gPqK5/Whats-App-Image-2026-11-04-at-9-13-31-PM-(1).jpg" alt="Logo El Portal" class="w-full h-full object-contain p-2">
+                </div>
+                <div class="absolute -bottom-1 -right-1 bg-amber-500 text-gray-900 w-8 h-8 rounded-full flex items-center justify-center border-2 border-gray-900 shadow-md" title="Calidad Premium">
+                    <i class="fas fa-star text-sm"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 pb-8">
+            <p class="font-semibold text-gray-300 mt-3 tracking-wide uppercase text-sm">Sabor y tradición desde 1999</p>
+            
+            <!-- Botones Principales: Mi Pedido (Carrito) y Reservar Mesa -->
+            <div class="mt-5 mb-5 space-y-2.5 flex flex-col items-center">
+                <button type="button" id="main-order-btn" class="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 text-white font-bold py-3 px-8 rounded-full text-base transition-all duration-300 hover:brightness-110 hover:scale-105 transform pulse-effect shadow-lg w-full max-w-[280px] flex items-center justify-center gap-2 cursor-pointer">
+                    <i class="fas fa-shopping-bag text-lg"></i>
+                    <span>Mi Pedido</span>
+                    <span class="cart-badge-inline bg-gray-900 text-amber-400 text-xs font-extrabold px-2 py-0.5 rounded-full hidden">0</span>
+                </button>
+
+                <a href="https://wa.me/573217780311?text=%C2%A1Hola!%20Quisiera%20hacer%20una%20reserva%20en%20El%20Portal." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 text-amber-400 border border-amber-500/40 font-semibold py-2.5 px-6 rounded-full text-xs transition-all w-full max-w-[280px]">
+                    <i class="fas fa-utensils"></i> Reservar Mesa por WhatsApp
+                </a>
+            </div>
+
+            <p class="text-gray-400 text-xs mb-5 uppercase tracking-wider font-semibold">Conecta con nosotros</p>
+
+            <div class="mb-6">
+                <!-- Fila 1 -->
+                <div class="flex justify-around items-start mb-5">
+                    <!-- Nuestro Menú -->
+                    <div class="text-center w-20 group">
+                        <button id="menu-btn" type="button" class="bg-gray-800 text-amber-400 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-gray-900 shadow-md mx-auto cursor-pointer" aria-label="Nuestro Menú">
+                            <i class="fas fa-book-open"></i>
+                        </button>
+                        <p class="text-[11px] mt-2 text-gray-300 font-medium">La Carta</p>
+                    </div>
+                    <!-- TikTok -->
+                    <div class="text-center w-20 group">
+                        <a href="https://www.tiktok.com/@elportalptoberrio?_r=1&_t=ZS-9B8Y7mMy2ul" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-gray-200 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-black group-hover:text-white shadow-md mx-auto" aria-label="TikTok">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <p class="text-[11px] mt-2 text-gray-300 font-medium">TikTok</p>
+                    </div>
+                    <!-- Instagram -->
+                    <div class="text-center w-20 group">
+                        <a href="https://www.instagram.com/elportalptoberrio/" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-pink-500 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-gradient-to-tr group-hover:from-yellow-400 group-hover:via-pink-500 group-hover:to-purple-500 group-hover:text-white shadow-md mx-auto" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <p class="text-[11px] mt-2 text-gray-300 font-medium">Instagram</p>
+                    </div>
+                </div>
+
+                <!-- Fila 2 -->
+                <div class="flex justify-around items-start mb-5">
+                    <!-- WhatsApp -->
+                    <div class="text-center w-20 group">
+                        <a href="https://wa.me/573217780311?text=%C2%A1Hola!%20Quisiera%20hacer%20un%20pedido%20en%20El%20Portal." target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-green-500 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-green-500 group-hover:text-white shadow-md mx-auto" aria-label="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <p class="text-[11px] mt-2 text-gray-300 font-medium">WhatsApp</p>
+                    </div>
+                    <!-- Ubicación -->
+                    <div class="text-center w-20 group">
+                        <a href="https://www.google.com/search?client=ms-android-samsung-rvo1&hs=A9GW&sca_esv=4a7ed7aa1887c62c&hl=es-US&cs=1&sxsrf=AKL5yDj_jBsNbK8Gz6h3qK27qvzRQk2QqA:1793836551176&kgmid=/g/11qg03wm_g&q=El+Portal&shem=dlvs1,epsd1,ltae,rimspwouoe&shndl=30&source=sh/x/loc/uni/m1/4&kgs=16c83d49942a406a&utm_source=dlvs1,epsd1,ltae,rimspwouoe,sh/x/loc/uni/m1/4" target="_blank" rel="noopener noreferrer" class="bg-gray-800 text-amber-500 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-600 group-hover:text-white shadow-md mx-auto" aria-label="Ubicación">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </a>
+                        <p class="text-[11px] mt-2 text-gray-300 font-medium">Ubicación</p>
+                    </div>
+                    <!-- Pizzas -->
+                    <div class="text-center w-20 group">
+                        <button id="pizzas-btn" type="button" class="bg-gray-800 text-amber-400 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-gray-900 shadow-md mx-auto relative overflow-hidden cursor-pointer" aria-label="Pizzas">
+                            <i class="fas fa-pizza-slice"></i>
+                            <span class="absolute top-0 right-0 bg-amber-500 w-3 h-3 rounded-full border border-gray-900"></span>
+                        </button>
+                        <p class="text-[11px] mt-2 text-gray-300 font-medium">Pizzas</p>
+                    </div>
+                </div>
+
+                <!-- Fila 3 -->
+                <div class="flex justify-center gap-6 items-start">
+                    <!-- Guardar Contacto -->
+                    <div class="text-center w-20 group">
+                        <a id="save-contact-btn" href="#" download="ElPortal.vcf" class="bg-gray-800 text-gray-400 border border-gray-700 w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-gray-600 group-hover:text-white shadow-md mx-auto" aria-label="Guardar Contacto">
+                            <i class="fas fa-address-book"></i>
+                        </a>
+                        <p class="text-[10px] mt-2 text-gray-400">Guardar</p>
+                    </div>
+                    <!-- Compartir / QR -->
+                    <div class="text-center w-20 group">
+                        <button id="share-btn" type="button" class="bg-gray-800 text-gray-400 border border-gray-700 w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-gray-900 shadow-md mx-auto cursor-pointer" aria-label="Compartir / QR">
+                            <i class="fas fa-share-nodes"></i>
+                        </button>
+                        <p class="text-[10px] mt-2 text-gray-400">Compartir</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instalación PWA link -->
+            <button type="button" id="install-btn" class="cursor-pointer text-xs text-amber-500 hover:text-amber-400 hover:underline font-semibold inline-flex justify-center items-center gap-1">
+                <i class="fas fa-download"></i> ¿Cómo instalar nuestra app?
+            </button>
+
+            <!-- Footer Conecta+ -->
+            <div class="mt-8 pt-4 border-t border-gray-700/50 flex flex-col items-center">
+                <div class="mb-4 flex items-center gap-2 bg-gray-900/90 px-3 py-1.5 rounded-full border border-gray-700/70 shadow-inner" title="Visitas a la tarjeta">
+                    <i class="fas fa-eye text-amber-500 text-xs"></i>
+                    <span class="text-xs text-gray-300 font-semibold">Visitas:</span>
+                    <img src="https://hits.sh/soyconectaplus.com/elportalpuertoberrio.svg?style=flat-square&label=&color=d97706&labelColor=111827" alt="Contador de Visitas" class="h-4 rounded-sm">
+                </div>
+
+                <p class="text-[10px] text-gray-400 mb-2">Este sitio fue creado por <span class="text-white font-bold tracking-wide">Conecta+</span></p>
+                <a href="https://wa.me/573125749480?text=%C2%A1Hola!%20Me%20encant%C3%B3%20la%20tarjeta%20digital%20de%20El%20Portal%20y%20quiero%20crear%20una%20para%20mi%20negocio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-gray-800 text-gray-300 text-[10px] font-semibold py-1.5 px-4 rounded-full border border-gray-600 hover:bg-gray-700 hover:text-white hover:border-gray-400 transition-all shadow-sm">
+                    <i class="fab fa-whatsapp text-green-500 mr-1.5 text-sm"></i> ¡Quiero el mío!
+                </a>
+            </div>
+        </div>
+
+        <!-- Botón Flotante Carrito -->
+        <button type="button" id="floating-cart-btn" class="fixed md:absolute bottom-5 right-5 bg-gradient-to-tr from-amber-600 to-amber-400 text-gray-950 w-14 h-14 rounded-full shadow-[0_0_25px_rgba(217,119,6,0.65)] flex items-center justify-center text-2xl z-40 hover:scale-110 transition-transform border-2 border-gray-950 cursor-pointer" aria-label="Ver Carrito de Pedido">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-badge absolute -top-1 -right-1 bg-gray-950 text-amber-400 text-[11px] font-extrabold w-6 h-6 rounded-full flex items-center justify-center border-2 border-amber-400 hidden">0</span>
+        </button>
+
+        <!-- Notificación (Toast) -->
+        <div id="toast" class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-amber-500 text-gray-950 px-5 py-2.5 rounded-full shadow-[0_10px_25px_rgba(0,0,0,0.6)] z-[70] text-xs font-bold transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px] flex items-center gap-2 border border-gray-950">
+            <i class="fas fa-check-circle text-gray-900 text-base"></i> <span id="toast-msg">Agregado al pedido</span>
+        </div>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- POPUP 1: CARRITO DE COMPRAS COMPLETO                                  -->
+    <!-- ===================================================================== -->
+    <div id="cart-popup" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-[60] hidden p-4">
+        <div class="bg-gray-900 border-2 border-amber-500/60 rounded-3xl shadow-2xl p-5 max-w-sm w-full relative text-white flex flex-col max-h-[92vh]">
+            <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-3 shrink-0">
+                <h3 class="text-2xl font-bold font-logo text-amber-400 flex items-center gap-2">
+                    <i class="fas fa-shopping-bag text-amber-500"></i> Tu Pedido
+                </h3>
+                <button id="close-cart-popup-btn" type="button" class="text-2xl text-gray-400 hover:text-white w-8 h-8 flex justify-center items-center rounded-full bg-gray-800 cursor-pointer">&times;</button>
+            </div>
+            
+            <div class="overflow-y-auto menu-scrollbar flex-grow pr-1 mb-3 space-y-4">
+                <div id="cart-items" class="space-y-2.5"></div>
+
+                <!-- Formulario de Entrega, Nombre, Pago y Notas -->
+                <div id="delivery-form" class="bg-gray-950/90 rounded-2xl p-3.5 border border-gray-800 space-y-3 text-left hidden">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                        <i class="fas fa-clipboard-list text-amber-500"></i> Datos de Entrega
+                    </p>
+
+                    <div>
+                        <label for="customer-name" class="text-[10px] text-gray-300 block mb-1">Tu Nombre *</label>
+                        <input type="text" id="customer-name" maxlength="60" oninput="updateWhatsAppLink()" placeholder="Ej: Carlos Pérez" class="w-full bg-gray-900 text-white text-xs rounded-xl px-3 py-2 border border-gray-700 focus:outline-none focus:border-amber-500 placeholder-gray-500">
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] text-gray-300 block mb-1">Modalidad de Entrega</label>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button type="button" id="btn-mode-domicilio" onclick="setDeliveryMode('Domicilio')" class="py-2 px-1.5 rounded-xl text-[11px] font-bold border border-amber-500 bg-amber-500 text-gray-950 flex items-center justify-center gap-1 transition-all cursor-pointer">
+                                <i class="fas fa-motorcycle"></i> Domicilio
+                            </button>
+                            <button type="button" id="btn-mode-recoger" onclick="setDeliveryMode('Recoger en Restaurante')" class="py-2 px-1.5 rounded-xl text-[11px] font-bold border border-gray-700 bg-gray-900 text-gray-300 flex items-center justify-center gap-1 transition-all cursor-pointer">
+                                <i class="fas fa-store"></i> Recoger
+                            </button>
+                            <button type="button" id="btn-mode-mesa" onclick="setDeliveryMode('En Mesa')" class="py-2 px-1.5 rounded-xl text-[11px] font-bold border border-gray-700 bg-gray-900 text-gray-300 flex items-center justify-center gap-1 transition-all cursor-pointer">
+                                <i class="fas fa-utensils"></i> En Mesa
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="address-field-container">
+                        <label id="address-label" for="order-address" class="text-[10px] text-gray-300 block mb-1">Dirección / Barrio</label>
+                        <input type="text" id="order-address" maxlength="120" oninput="updateWhatsAppLink()" placeholder="Ej: Calle 10 # 5-20, Barrio Centro" class="w-full bg-gray-900 text-white text-xs rounded-xl px-3 py-2 border border-gray-700 focus:outline-none focus:border-amber-500 placeholder-gray-500">
+                    </div>
+
+                    <div>
+                        <label for="order-payment" class="text-[10px] text-gray-300 block mb-1">Método de Pago</label>
+                        <select id="order-payment" onchange="updateWhatsAppLink()" class="w-full bg-gray-900 text-white text-xs rounded-xl px-3 py-2 border border-gray-700 focus:outline-none focus:border-amber-500">
+                            <option value="Efectivo">💵 Efectivo</option>
+                            <option value="Transferencia Bancolombia / Nequi">📱 Transferencia Bancolombia / Nequi</option>
+                            <option value="Datáfono">💳 Datáfono</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="order-notes" class="text-[10px] text-gray-300 block mb-1">Notas o indicaciones (opcional)</label>
+                        <input type="text" id="order-notes" maxlength="180" oninput="updateWhatsAppLink()" placeholder="Ej: Término de la carne 3/4, sin cebolla..." class="w-full bg-gray-900 text-white text-xs rounded-xl px-3 py-2 border border-gray-700 focus:outline-none focus:border-amber-500 placeholder-gray-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen de Total y Botón de WhatsApp -->
+            <div class="shrink-0 pt-3 border-t border-gray-800">
+                <div id="cart-total-box" class="flex justify-between items-center bg-gray-950 px-4 py-2.5 rounded-xl border border-gray-800 mb-3 hidden">
+                    <span class="text-xs uppercase tracking-wider text-gray-300 font-semibold">Total Estimado:</span>
+                    <span id="cart-total-amount" class="text-lg font-extrabold text-amber-400">$0</span>
+                </div>
+
+                <a id="send-order-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-gradient-to-r from-green-600 to-emerald-500 text-white font-bold py-3.5 px-6 rounded-2xl text-sm transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.35)] flex items-center justify-center gap-2 opacity-50 pointer-events-none">
+                    <i class="fab fa-whatsapp text-xl"></i> Enviar Pedido por WhatsApp
+                </a>
+                
+                <div class="flex justify-between items-center mt-3 px-1">
+                    <button type="button" onclick="clearCart()" id="clear-cart-btn" class="text-red-400 text-[11px] hover:underline hidden cursor-pointer">
+                        <i class="fas fa-trash-can mr-1"></i> Vaciar carrito
+                    </button>
+                    <button type="button" onclick="closePopup('cart-popup')" class="text-gray-300 text-xs hover:text-white underline ml-auto cursor-pointer">
+                        Seguir viendo carta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- POPUP 2: COMPARTIR (Nativo + QR + Copiar)                             -->
+    <!-- ===================================================================== -->
+    <div id="share-popup" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4 transition-opacity">
+        <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-6 max-w-xs w-full text-center relative text-white">
+            <button id="close-share-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors cursor-pointer">&times;</button>
+            <h3 class="text-xl font-bold mb-1 font-logo text-amber-400">Comparte El Portal</h3>
+            <p class="text-xs text-gray-400 mb-4">Escanea el código QR o envía el enlace</p>
+            
+            <div id="qrcode-container" class="flex justify-center mb-4 bg-white p-3 rounded-xl mx-auto w-max shadow-inner"></div>
+            
+            <button id="native-share-trigger" type="button" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs mb-3 flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+                <i class="fas fa-paper-plane"></i> Enviar enlace por WhatsApp / Apps
+            </button>
+
+            <div class="flex items-center gap-1.5 bg-gray-900 border border-gray-600 rounded-lg p-1.5">
+                <input type="text" id="share-url" class="w-full bg-transparent text-gray-300 text-xs px-2 focus:outline-none cursor-pointer" readonly>
+                <button id="copy-url-btn" type="button" class="bg-gray-700 hover:bg-gray-600 text-amber-400 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer">
+                    <i class="fas fa-copy mr-1"></i> Copiar
+                </button>
+            </div>
+            <p id="copy-feedback" class="text-[11px] text-green-400 mt-2 hidden font-medium">¡Enlace copiado al portapapeles!</p>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- POPUP 3: CARTA EL PORTAL (DINÁMICA CON BOTÓN + AL CARRITO)            -->
+    <!-- ===================================================================== -->
+    <div id="menu-popup" class="fixed inset-0 bg-gradient-to-b from-gray-900 to-black z-50 hidden p-4 text-white">
+        <div class="w-full h-full max-w-lg mx-auto relative flex flex-col">
+            <div class="flex justify-between items-center py-4 px-2 border-b border-gray-800 shrink-0">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-leaf text-amber-500 text-xl"></i>
+                    <h2 class="font-logo text-2xl text-white tracking-wide">CARTA EL PORTAL</h2>
+                </div>
+                <button id="close-menu-popup-btn" type="button" class="text-3xl text-gray-400 hover:text-amber-500 transition-colors z-10 w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 cursor-pointer">&times;</button>
+            </div>
+
+            <div class="overflow-y-auto menu-scrollbar flex-grow py-5 pr-2">
+                <p class="text-sm text-gray-400 mb-5 px-2">Toca el botón <strong class="text-amber-400">+</strong> en cualquier plato para agregarlo a tu pedido.</p>
+                
+                <div id="carta-list-container" class="space-y-7 px-2"></div>
+
+                <div class="mt-10 mb-8 text-center px-2">
+                    <button type="button" onclick="closePopup('menu-popup'); openCartModal();" class="block w-full bg-amber-500 text-gray-950 font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.4)] cursor-pointer">
+                        <i class="fas fa-shopping-bag mr-2"></i> Ver mi Pedido
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- POPUP 4: PIZZAS ARTESANALES (DINÁMICA CON BOTÓN + AL CARRITO)         -->
+    <!-- ===================================================================== -->
+    <div id="pizzas-popup" class="fixed inset-0 bg-gradient-to-b from-gray-900 to-black z-50 hidden p-4 text-white">
+        <div class="w-full h-full max-w-lg mx-auto relative flex flex-col">
+            <div class="flex justify-between items-center py-4 px-2 border-b border-amber-500/40 shrink-0">
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-pizza-slice text-amber-400 text-xl"></i>
+                    <h2 class="font-logo text-2xl text-amber-400 tracking-wide">PIZZAS ARTESANALES</h2>
+                </div>
+                <button id="close-pizzas-popup-btn" type="button" class="text-3xl text-gray-400 hover:text-amber-400 transition-colors z-10 w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 cursor-pointer">&times;</button>
+            </div>
+
+            <div class="overflow-y-auto menu-scrollbar flex-grow py-5 pr-2">
+                <div class="px-2 mb-5">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=800&auto=format&fit=crop" alt="Pizzas Artesanales" class="w-full h-36 rounded-2xl object-cover shadow-lg border border-gray-700" onerror="this.src='https://placehold.co/600x400/111827/D97706?text=Pizzas';">
+                </div>
+
+                <div id="pizzas-list-container" class="space-y-3 px-2"></div>
+
+                <div class="mt-10 mb-8 text-center px-2">
+                    <button type="button" onclick="closePopup('pizzas-popup'); openCartModal();" class="block w-full bg-amber-500 text-gray-950 font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.4)] cursor-pointer">
+                        <i class="fas fa-shopping-bag mr-2"></i> Ver mi Pedido
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- POPUP 5: INSTALACIÓN PWA                                              -->
+    <!-- ===================================================================== -->
+    <div id="install-popup" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4 transition-opacity">
+        <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-6 max-w-sm w-full relative text-white">
+            <button id="close-install-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors cursor-pointer">&times;</button>
+            
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-gray-900 mx-auto mb-3">
+                    <i class="fas fa-mobile-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold font-logo text-amber-400 tracking-wide">Instalar El Portal</h3>
+                <p class="text-xs text-gray-400 mt-1">Lleva nuestra carta siempre en tu celular</p>
+            </div>
+            
+            <div class="mb-5 bg-gray-900 p-4 rounded-xl border border-gray-700 text-left">
+                <h4 class="font-bold text-md mb-2 flex items-center text-gray-200"><i class="fab fa-apple mr-2 text-gray-400"></i> En iOS (Safari)</h4>
+                <ol class="list-decimal list-inside text-sm text-gray-400 space-y-2">
+                    <li>Toca el botón <strong>Compartir</strong> <i class="fas fa-share-from-square mx-1"></i>.</li>
+                    <li>Desliza hacia arriba y elige <strong class="text-gray-200">"Agregar a inicio"</strong>.</li>
+                    <li>Toca en <strong class="text-gray-200">"Agregar"</strong> arriba a la derecha.</li>
+                </ol>
+            </div>
+            
+            <div class="bg-gray-900 p-4 rounded-xl border border-gray-700 text-left">
+                <h4 class="font-bold text-md mb-2 flex items-center text-gray-200"><i class="fab fa-android mr-2 text-green-500"></i> En Android (Chrome)</h4>
+                <ol class="list-decimal list-inside text-sm text-gray-400 space-y-2">
+                    <li>Toca los <strong>tres puntos</strong> <i class="fas fa-ellipsis-v mx-1"></i> arriba a la derecha.</li>
+                    <li>Elige <strong class="text-gray-200">"Agregar a la pantalla principal"</strong>.</li>
+                    <li>Confirma tocando <strong class="text-gray-200">"Instalar"</strong>.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const sanitizeText = (str) => {
+                if (typeof str !== 'string') return '';
+                return str.replace(/[<>"'`\\]/g, '').trim();
+            };
+
+            const escapeAttr = (str) => String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+            const formatCOP = (amount) => "$" + Number(amount || 0).toLocaleString('es-CO');
+
+            const WHATSAPP_NUMBER = '573217780311';
+            const SHARE_URL = 'https://soyconectaplus.com/elportalpuertoberrio/';
+
+            // =================================================================
+            // BASE DE DATOS DEL MENÚ DE EL PORTAL
+            // =================================================================
+            const cartaCategories = [
+                {
+                    title: "Entradas",
+                    items: [
+                        { name: "Patacones x 10", price: 19900, desc: "Acompañados con hogao." },
+                        { name: "Chorizo El Portal", price: 21900, desc: "100% cerdo, acompañado con arepa y limón." },
+                        { name: "Picadita", price: 26900, desc: "Chicharrón, chorizo, morcilla y arepa." }
+                    ]
+                },
+                {
+                    title: "Desayunos",
+                    items: [
+                        { name: "Calentado El Portal", price: 22500, desc: "Frijoles, arroz, tajada de maduro, huevo al gusto, queso, arepa y carne (res, cerdo, pollo o chicharrón), chocolate o café." },
+                        { name: "Migote", price: 20900, desc: "Pan de queso o buñuelo, mantequilla, cuajada, galleta Saltín, galletas Ducales, chocolate, mozarella y pan tajado." },
+                        { name: "Huevos Rancheros", price: 16900, desc: "Salchicha ranchera, tomate, cebolla, queso, chocolate o café." },
+                        { name: "Omelette Sencillo", price: 17000, desc: "Tortilla de huevo, fruta fresca, pan, jamón y queso." },
+                        { name: "Calentado Tradicional", price: 18500, desc: "Frijoles, arroz, tajada de maduro, huevo al gusto, queso, arepa y chocolate o café." },
+                        { name: "Huevos al Gusto", price: 15500, desc: "Cacerola, revueltos con/sin aliños, fritos, pan, arepa, queso, chocolate o café." },
+                        { name: "Omelette con Todo", price: 20500, desc: "Tortilla de huevo, fruta fresca, pan, queso, champiñones, maicitos, jamón y tocineta." }
+                    ]
+                },
+                {
+                    title: "Cortes de Res",
+                    note: "Todos los cortes vienen acompañados con ensalada y papas al vapor.",
+                    items: [
+                        { name: "Entrañita 300 GR", price: 48500, desc: "Su sabor y terneza lo han hecho apetecido." },
+                        { name: "Solomito 450 GR", price: 63500, desc: "Corte suave y tierno." },
+                        { name: "Chata 450 GR", price: 60900, desc: "Corte rectangular blando y jugoso." },
+                        { name: "Punta de Anca 450 GR", price: 63500, desc: "Corte con capa de grasa externa con mucho sabor." },
+                        { name: "Baby Beef 350 GR", price: 56500, desc: "Fino corte de solomito cubierto con tocineta." },
+                        { name: "Solomito 300 GR", price: 51500, desc: "Corte suave y tierno." },
+                        { name: "Chata 300 GR", price: 49500, desc: "Corte rectangular blando y jugoso." },
+                        { name: "Punta de Anca 300 GR", price: 51500, desc: "Corte con capa de grasa externa con mucho sabor." }
+                    ]
+                },
+                {
+                    title: "Más de la Parrilla",
+                    items: [
+                        { name: "Tomahawk Cerdo", price: 36500, desc: "Corte especial de cerdo a la parrilla." },
+                        { name: "Solomito Cerdo", price: 37500, desc: "Corte magro y jugoso a la brasa." },
+                        { name: "Cañón Cerdo", price: 36900, desc: "Lomo de cerdo asado a la perfección." },
+                        { name: "Costilla Cerdo", price: 35500, desc: "Costillas jugosas a la parrilla." },
+                        { name: "Bife Búfalo 300-350 GR", price: 49900, desc: "Corte blando de forma ovalada con poco contenido graso." },
+                        { name: "Chata Búfalo 300-350 GR", price: 73900, desc: "Corte con gran marmoleo y capa de grasa." },
+                        { name: "Punta de Anca Búfalo 300-350 GR", price: 52500, desc: "Corte muy jugoso y tierno con capa de grasa." },
+                        { name: "Pechuga a la Plancha", price: 36900, desc: "Pechuga jugosa con acompañamientos." },
+                        { name: "Pechuga Gratinada c/ Champiñones", price: 38900, desc: "Cubierta de queso fundido y champiñones." },
+                        { name: "Milanesa de Pollo", price: 33600, desc: "Crocante y dorada." }
+                    ]
+                },
+                {
+                    title: "Hamburguesas",
+                    items: [
+                        { name: "Monumental 200 GR", price: 29900, desc: "Con 4 quesos (mozarella, frito, chedar, cremosino), cebollas confitadas, tomate, lechuga, sal de tocineta, con papas a la francesa." },
+                        { name: "Búfalo 200 GR", price: 36500, desc: "Carne magra acompañada de papas a la francesa." },
+                        { name: "Celestial 200 GR", price: 32900, desc: "Pan brioche, salsa tártara, mermelada de tocineta, lechuga, tomate, queso cheddar, queso philadelfia, trozos de piña confitados y papas a la francesa." },
+                        { name: "Premium 200 GR", price: 27900, desc: "Tomates, lechuga, cebolla caramelizada, queso mozarella, queso chedar, acompañada de papas a la francesa." },
+                        { name: "BP 2024 150 GR", price: 29900, desc: "Pan artesanal tostado, queso crema, pepinillos de la casa agridulce, alioli ranchero, mozarella en panko, lechuga, tomate y puerro crujiente." }
+                    ]
+                },
+                {
+                    title: "Pescados",
+                    note: "Acompañados con ensalada de la casa, patacones y queso frito.",
+                    items: [
+                        { name: "Bocachico", price: 57000, desc: "Acompañado con ensalada, patacones y queso frito." },
+                        { name: "Salmón", price: 52000, desc: "Acompañado con ensalada, patacones y queso frito." },
+                        { name: "Trucha Whaleska", price: 43500, desc: "Acompañada con ensalada, patacones y queso frito." },
+                        { name: "Bagre Criollo", price: 42900, desc: "Acompañado con ensalada, patacones y queso frito." },
+                        { name: "Bagre Dorado", price: 40500, desc: "Acompañado con ensalada, patacones y queso frito." },
+                        { name: "Trucha al Ajillo", price: 39500, desc: "Acompañada con ensalada, patacones y queso frito." },
+                        { name: "Tilapia", price: 34900, desc: "Acompañada con ensalada, patacones y queso frito." },
+                        { name: "Filete Milanesa", price: 33500, desc: "Acompañado con ensalada, patacones y queso frito." },
+                        { name: "Cachama", price: 32000, desc: "Acompañada con ensalada, patacones y queso frito." }
+                    ]
+                },
+                {
+                    title: "Picadas",
+                    items: [
+                        { name: "Picada Para 2 Personas", price: 59900, desc: "Carne de res, cerdo, chicharrón, chorizo, morcilla, tomates, patacones y arepa." },
+                        { name: "Picada Para 5 o 6 Personas", price: 109900, desc: "Carne de res, cerdo, chicharrón, chorizo, morcilla, tomates, patacones y arepa." }
+                    ]
+                },
+                {
+                    title: "Bebidas y Sangrías",
+                    items: [
+                        { name: "Copa de Sangría", price: 18900, desc: "Refrescante sangría de la casa." },
+                        { name: "Vino Rosa Jarra", price: 59900, desc: "Para compartir." },
+                        { name: "Vino Rosa 1/2 Jarra", price: 35000, desc: "Media jarra." },
+                        { name: "Vino Tinto Jarra", price: 62900, desc: "Para compartir." },
+                        { name: "Vino Tinto 1/2 Jarra", price: 38900, desc: "Media jarra." },
+                        { name: "Jarra de Limonada", price: 12000, desc: "Natural y refrescante." },
+                        { name: "Jugo de Mandarina", price: 11000, desc: "Natural." },
+                        { name: "Limonada de Coco / Cerezada", price: 10500, desc: "Fría y cremosa." },
+                        { name: "Sodas (Cereza, mango, maracuyá)", price: 9900, desc: "Sodas saborizadas." },
+                        { name: "Limonada Hierbabuena / Lyches", price: 9900, desc: "Refrescante." },
+                        { name: "Jugos Naturales", price: 9200, desc: "Fruta fresca." },
+                        { name: "Soda Michelada", price: 8800, desc: "Con limón y sal." },
+                        { name: "Jugo de Naranja", price: 7200, desc: "Recién exprimido." },
+                        { name: "Mazamorra con Panela Rallada", price: 6500, desc: "Tradicional." },
+                        { name: "Claro con Bocadillo", price: 4900, desc: "Tradicional." },
+                        { name: "Botella con Agua", price: 4500, desc: "Agua pura." }
+                    ]
+                }
+            ];
+
+            const pizzasList = [
+                { name: "Pizza BURRATA", price: 47880, desc: "Base napolitana, queso mozzarella, salami, chorizo español, aceitunas, jamón serrano, tomates caramelizados, albahaca y una espectacular burrata." },
+                { name: "Pizza PORTAL PARADISE", price: 47880, desc: "Base salsa Alfredo, queso mozzarella, queso azul, uchuvas caramelizadas, almendras laminadas, albahaca, jamón serrano, queso ricota." },
+                { name: "Pizza ATLANTÍS", price: 47400, desc: "Base napolitana, queso mozzarella, camarones, palmitos, cebollas, atún, pimentón, champiñones. (IVA incluido)" },
+                { name: "Pizza PORTAL MÉX", price: 45000, desc: "Base pesto, queso mozzarella, trozos de tomates, maíz tierno, chorizo, salami, aguacate en julianas, jalapeños. (IVA incluido)" },
+                { name: "Pizza PORTAL BACON", price: 41880, desc: "Base napolitana, queso mozzarella, tocineta picada sobre la pizza bañada con salsa BBQ, perfumada con Jack Daniel's & Honey, queso ricota." },
+                { name: "Pizza POLLO CON CHAMPIÑONES", price: 38280, desc: "Base napolitana, queso mozzarella, trozos de pollo a la parrilla, champiñones." },
+                { name: "Pizza HAWAIANA", price: 34200, desc: "Base napolitana, queso mozzarella, abundantes trozos de piña confitada y mucho jamón. (IVA incluido)" },
+                { name: "Pizza NAPOLITANA", price: 33480, desc: "Base napolitana, queso mozzarella, salami, tomates cherry. (IVA incluido)" },
+                { name: "Pizza MARGARITA", price: 31080, desc: "Base napolitana, queso mozzarella, tomates cherry, albahaca." }
+            ];
+
+            // =================================================================
+            // RENDERIZADO DE LA CARTA Y PIZZAS CON BOTÓN + AL CARRITO
+            // =================================================================
+            const renderItemCard = (item) => {
+                const safeName = escapeAttr(item.name);
+                return `
+                    <div class="bg-gray-800/90 rounded-2xl p-3.5 border border-gray-700 flex items-center justify-between gap-3 text-left transition-all hover:border-amber-500/60 hover:bg-gray-800">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-amber-400 font-logo leading-tight">${item.name}</h4>
+                            <p class="text-gray-300 text-[11px] mt-1 leading-snug">${item.desc}</p>
+                            <p class="text-white text-xs font-extrabold mt-1.5">${formatCOP(item.price)}</p>
+                        </div>
+                        <button type="button" onclick="addToCart('${safeName}', ${item.price})" class="bg-amber-500 hover:bg-amber-400 text-gray-950 w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0 transition-transform hover:scale-110 shadow-md font-bold cursor-pointer" aria-label="Agregar ${item.name}">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                `;
+            };
+
+            const cartaContainer = document.getElementById('carta-list-container');
+            if (cartaContainer) {
+                cartaContainer.innerHTML = cartaCategories.map(cat => `
+                    <div>
+                        <h3 class="text-xl font-bold font-logo text-amber-500 border-b border-gray-700 pb-2 mb-2 text-left">${cat.title}</h3>
+                        ${cat.note ? `<p class="text-xs text-gray-400 mb-3 italic text-left">${cat.note}</p>` : '<div class="mb-3"></div>'}
+                        <div class="space-y-2.5">
+                            ${cat.items.map(renderItemCard).join('')}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const pizzasContainer = document.getElementById('pizzas-list-container');
+            if (pizzasContainer) {
+                pizzasContainer.innerHTML = pizzasList.map(renderItemCard).join('');
+            }
+
+            // =================================================================
+            // MANEJO DE POPUPS
+            // =================================================================
+            window.openPopup = (popupId) => {
+                const el = document.getElementById(popupId);
+                if (el) el.classList.remove('hidden');
+            };
+            window.closePopup = (popupId) => {
+                const el = document.getElementById(popupId);
+                if (el) el.classList.add('hidden');
+            };
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    ['share-popup', 'menu-popup', 'install-popup', 'pizzas-popup', 'cart-popup'].forEach(closePopup);
+                }
+            });
+
+            // =================================================================
+            // CARRITO DE COMPRAS INTERACTIVO
+            // =================================================================
+            let cart = {};
+            let deliveryMode = 'Domicilio';
+
+            const cartItemsContainer = document.getElementById('cart-items');
+            const sendOrderBtn = document.getElementById('send-order-btn');
+            const cartTotalBox = document.getElementById('cart-total-box');
+            const cartTotalAmount = document.getElementById('cart-total-amount');
+            const clearCartBtn = document.getElementById('clear-cart-btn');
+            const deliveryForm = document.getElementById('delivery-form');
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+
+            window.openCartModal = () => {
+                renderCart();
+                updateWhatsAppLink();
+                openPopup('cart-popup');
+            };
+
+            document.getElementById('main-order-btn')?.addEventListener('click', openCartModal);
+            document.getElementById('floating-cart-btn')?.addEventListener('click', openCartModal);
+            document.getElementById('close-cart-popup-btn')?.addEventListener('click', () => closePopup('cart-popup'));
+            document.getElementById('cart-popup')?.addEventListener('click', (e) => {
+                if (e.target.id === 'cart-popup') closePopup('cart-popup');
+            });
+
+            const showToast = (itemName) => {
+                toastMsg.innerText = `1x ${itemName} agregado`;
+                toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+                toast.classList.add('opacity-100', 'translate-y-0');
+                setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+                }, 2000);
+            };
+
+            window.addToCart = (itemName, price) => {
+                if (cart[itemName]) {
+                    cart[itemName].qty++;
+                } else {
+                    cart[itemName] = { qty: 1, price: price };
+                }
+                updateCartUI();
+                showToast(itemName);
+            };
+
+            window.decreaseCart = (itemName) => {
+                if (cart[itemName]) {
+                    cart[itemName].qty--;
+                    if (cart[itemName].qty <= 0) delete cart[itemName];
+                }
+                updateCartUI();
+                renderCart();
+            };
+
+            window.increaseCart = (itemName) => {
+                if (cart[itemName]) {
+                    cart[itemName].qty++;
+                }
+                updateCartUI();
+                renderCart();
+            };
+
+            window.clearCart = () => {
+                cart = {};
+                updateCartUI();
+                renderCart();
+            };
+
+            window.setDeliveryMode = (mode) => {
+                deliveryMode = mode;
+                const modes = [
+                    { id: 'btn-mode-domicilio', val: 'Domicilio' },
+                    { id: 'btn-mode-recoger', val: 'Recoger en Restaurante' },
+                    { id: 'btn-mode-mesa', val: 'En Mesa' }
+                ];
+                modes.forEach(m => {
+                    const btn = document.getElementById(m.id);
+                    if (!btn) return;
+                    if (m.val === mode) {
+                        btn.className = "py-2 px-1.5 rounded-xl text-[11px] font-bold border border-amber-500 bg-amber-500 text-gray-950 flex items-center justify-center gap-1 transition-all cursor-pointer";
+                    } else {
+                        btn.className = "py-2 px-1.5 rounded-xl text-[11px] font-bold border border-gray-700 bg-gray-900 text-gray-300 flex items-center justify-center gap-1 transition-all cursor-pointer";
+                    }
+                });
+
+                const addrContainer = document.getElementById('address-field-container');
+                const addrLabel = document.getElementById('address-label');
+                const addrInput = document.getElementById('order-address');
+
+                if (mode === 'Recoger en Restaurante') {
+                    addrContainer.classList.add('hidden');
+                } else if (mode === 'En Mesa') {
+                    addrContainer.classList.remove('hidden');
+                    addrLabel.innerText = "Número de Mesa";
+                    addrInput.placeholder = "Ej: Mesa # 4";
+                } else {
+                    addrContainer.classList.remove('hidden');
+                    addrLabel.innerText = "Dirección / Barrio";
+                    addrInput.placeholder = "Ej: Calle 10 # 5-20, Barrio Centro";
+                }
+                updateWhatsAppLink();
+            };
+
+            const updateCartUI = () => {
+                const entries = Object.values(cart);
+                const totalCount = entries.reduce((sum, item) => sum + item.qty, 0);
+                const totalMoney = entries.reduce((sum, item) => sum + (item.qty * item.price), 0);
+
+                document.querySelectorAll('.cart-badge, .cart-badge-inline').forEach(badge => {
+                    badge.innerText = totalCount;
+                    if (totalCount > 0) badge.classList.remove('hidden');
+                    else badge.classList.add('hidden');
+                });
+
+                if (totalCount > 0) {
+                    sendOrderBtn.classList.remove('opacity-50', 'pointer-events-none');
+                    sendOrderBtn.classList.add('hover:brightness-110');
+                    cartTotalBox.classList.remove('hidden');
+                    clearCartBtn.classList.remove('hidden');
+                    deliveryForm.classList.remove('hidden');
+                    cartTotalAmount.innerText = formatCOP(totalMoney);
+                } else {
+                    sendOrderBtn.classList.add('opacity-50', 'pointer-events-none');
+                    sendOrderBtn.classList.remove('hover:brightness-110');
+                    cartTotalBox.classList.add('hidden');
+                    clearCartBtn.classList.add('hidden');
+                    deliveryForm.classList.add('hidden');
+                }
+
+                updateWhatsAppLink(totalMoney);
+            };
+
+            const renderCart = () => {
+                const items = Object.entries(cart);
+                if (items.length === 0) {
+                    cartItemsContainer.innerHTML = `
+                        <div class="text-center py-10">
+                            <i class="fas fa-utensils text-4xl text-gray-700 mb-3"></i>
+                            <p class="text-gray-300 text-sm font-medium">Tu pedido está vacío.</p>
+                            <p class="text-gray-500 text-xs mt-1">Explora La Carta o Pizzas y toca + para agregar.</p>
+                        </div>`;
+                    return;
+                }
+
+                cartItemsContainer.innerHTML = items.map(([name, data]) => {
+                    const safeName = escapeAttr(name);
+                    return `
+                        <div class="bg-gray-800/80 rounded-2xl p-3 flex justify-between items-center border border-gray-700 shadow-sm">
+                            <div class="flex-1 pr-2 text-left">
+                                <h5 class="text-xs font-bold text-white leading-tight">${name}</h5>
+                                <p class="text-[11px] text-amber-400 font-semibold mt-0.5">${formatCOP(data.price * data.qty)} <span class="text-[9px] text-gray-400 font-normal">(${formatCOP(data.price)} c/u)</span></p>
+                            </div>
+                            <div class="flex items-center gap-2.5 bg-gray-950 rounded-full px-2 py-1 border border-gray-700">
+                                <button type="button" onclick="decreaseCart('${safeName}')" class="text-gray-300 hover:text-red-400 w-6 h-6 flex items-center justify-center font-bold text-lg cursor-pointer">&minus;</button>
+                                <span class="text-white text-xs w-4 text-center font-bold">${data.qty}</span>
+                                <button type="button" onclick="increaseCart('${safeName}')" class="text-gray-300 hover:text-amber-400 w-6 h-6 flex items-center justify-center font-bold text-lg cursor-pointer">+</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            };
+
+            window.updateWhatsAppLink = (passedTotal) => {
+                const items = Object.entries(cart);
+                if (items.length === 0) {
+                    sendOrderBtn.href = "#";
+                    return;
+                }
+
+                const totalMoney = typeof passedTotal === 'number'
+                    ? passedTotal
+                    : items.reduce((sum, [, data]) => sum + (data.qty * data.price), 0);
+
+                const customerName = sanitizeText(document.getElementById('customer-name')?.value || '');
+                const address = sanitizeText(document.getElementById('order-address')?.value || '');
+                const payment = sanitizeText(document.getElementById('order-payment')?.value || 'Efectivo');
+                const notes = sanitizeText(document.getElementById('order-notes')?.value || '');
+
+                let text = "¡Hola *Restaurante El Portal*! 🍽️ Quisiera hacer el siguiente pedido:\n\n";
+                items.forEach(([name, data]) => {
+                    text += `▪️ *${data.qty}x* ${name} — ${formatCOP(data.price * data.qty)}\n`;
+                });
+                text += `\n💰 *Total estimado:* ${formatCOP(totalMoney)}\n`;
+                if (customerName) {
+                    text += `👤 *Nombre:* ${customerName}\n`;
+                }
+                text += `🛵 *Modalidad:* ${deliveryMode}\n`;
+                if (deliveryMode !== 'Recoger en Restaurante') {
+                    text += `📍 *${deliveryMode === 'En Mesa' ? 'Mesa' : 'Dirección'}:* ${address || 'Por confirmar'}\n`;
+                }
+                text += `💳 *Método de pago:* ${payment}\n`;
+                if (notes) {
+                    text += `📝 *Notas:* ${notes}\n`;
+                }
+
+                sendOrderBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+            };
+
+            // =================================================================
+            // BOTÓN COMPARTIR (Web Share API + Modal QR)
+            // =================================================================
+            const shareBtn = document.getElementById('share-btn');
+            const sharePopup = 'share-popup';
+            const qrcodeContainer = document.getElementById('qrcode-container');
+            const shareUrlInput = document.getElementById('share-url');
+            const nativeShareTrigger = document.getElementById('native-share-trigger');
+            const copyUrlBtn = document.getElementById('copy-url-btn');
+            const copyFeedback = document.getElementById('copy-feedback');
+
+            const triggerNativeShare = async () => {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'Restaurante El Portal - Puerto Berrío',
+                            text: '¡Conoce la carta digital y haz tu pedido en Restaurante El Portal! Sabor y tradición desde 1999.',
+                            url: SHARE_URL
+                        });
+                        return true;
+                    } catch (err) {
+                        return false;
+                    }
+                }
+                return false;
+            };
+
+            shareBtn.addEventListener('click', () => {
+                shareUrlInput.value = SHARE_URL;
+                copyFeedback.classList.add('hidden');
+                
+                qrcodeContainer.innerHTML = '';
+                if (typeof QRCode === 'function') {
+                    new QRCode(qrcodeContainer, {
+                        text: SHARE_URL,
+                        width: 150,
+                        height: 150,
+                        colorDark : "#111827",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }
+                
+                openPopup(sharePopup);
+            });
+
+            nativeShareTrigger.addEventListener('click', async () => {
+                const shared = await triggerNativeShare();
+                if (!shared) {
+                    const waShareUrl = `https://wa.me/?text=${encodeURIComponent('¡Mira la carta digital de Restaurante El Portal! ' + SHARE_URL)}`;
+                    window.open(waShareUrl, '_blank', 'noopener,noreferrer');
+                }
+            });
+
+            const copyToClipboard = async () => {
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(SHARE_URL);
+                    } else {
+                        shareUrlInput.select();
+                        document.execCommand('copy');
+                    }
+                    copyFeedback.classList.remove('hidden');
+                    setTimeout(() => copyFeedback.classList.add('hidden'), 2500);
+                } catch (err) {}
+            };
+
+            copyUrlBtn.addEventListener('click', copyToClipboard);
+            shareUrlInput.addEventListener('click', copyToClipboard);
+
+            document.getElementById('close-share-popup-btn').addEventListener('click', () => closePopup(sharePopup));
+            document.getElementById(sharePopup).addEventListener('click', (e) => {
+                if (e.target.id === sharePopup) closePopup(sharePopup);
+            });
+
+            // =================================================================
+            // MODALES DE LA CARTA, PIZZAS, VCARD E INSTALACIÓN
+            // =================================================================
+            document.getElementById('menu-btn')?.addEventListener('click', () => openPopup('menu-popup'));
+            document.getElementById('close-menu-popup-btn')?.addEventListener('click', () => closePopup('menu-popup'));
+            document.getElementById('menu-popup')?.addEventListener('click', (e) => {
+                if (e.target.id === 'menu-popup') closePopup('menu-popup');
+            });
+
+            document.getElementById('pizzas-btn')?.addEventListener('click', () => openPopup('pizzas-popup'));
+            document.getElementById('close-pizzas-popup-btn')?.addEventListener('click', () => closePopup('pizzas-popup'));
+            document.getElementById('pizzas-popup')?.addEventListener('click', (e) => {
+                if (e.target.id === 'pizzas-popup') closePopup('pizzas-popup');
+            });
+
+            const saveContactBtn = document.getElementById('save-contact-btn');
+            const vCardData = `BEGIN:VCARD\nVERSION:3.0\nFN:Restaurante El Portal\nORG:El Portal\nTEL;TYPE=WORK,VOICE:+573217780311\nTEL;TYPE=CELL,VOICE:+573217780311\nADR;TYPE=WORK:;;Cra 6-5-17;Puerto Berrío;Antioquia;;Colombia\nURL:${SHARE_URL}\nEND:VCARD`;
+            saveContactBtn.href = `data:text/vcard;charset=utf-8,${encodeURIComponent(vCardData)}`;
+
+            const installBtn = document.getElementById('install-btn');
+            const installPopup = 'install-popup';
+            let deferredPrompt;
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+            });
+
+            installBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                } else {
+                    openPopup(installPopup);
+                }
+            });
+
+            document.getElementById('close-install-popup-btn').addEventListener('click', () => closePopup(installPopup));
+            document.getElementById(installPopup).addEventListener('click', (e) => {
+                if (e.target.id === installPopup) closePopup(installPopup);
+            });
+
+            // Service Worker PWA
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    const swCode = `
+                        const CACHE_NAME = 'el-portal-v3';
+                        self.addEventListener('install', (e) => { self.skipWaiting(); });
+                        self.addEventListener('activate', (e) => { e.waitUntil(clients.claim()); });
+                        self.addEventListener('fetch', (e) => {
+                            if (e.request.method !== 'GET') return;
+                            e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                        });
+                    `;
+                    const blob = new Blob([swCode], { type: 'application/javascript' });
+                    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
