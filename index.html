@@ -3,9 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Protección de interfaz y disuasión sin bloquear botones ni campos de texto -->
+    <script>
+        (function() {
+            const isEditable = (el) => {
+                if (!el) return false;
+                return Boolean(el.closest('input, textarea, select, [contenteditable="true"]'));
+            };
+
+            document.addEventListener('contextmenu', function(e) {
+                if (!isEditable(e.target)) {
+                    e.preventDefault();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                const key = (e.key || '').toLowerCase();
+                if (
+                    e.key === 'F12' ||
+                    (e.ctrlKey && e.shiftKey && ['i', 'j', 'c', 'u'].includes(key)) ||
+                    (e.ctrlKey && ['u', 's', 'p'].includes(key)) ||
+                    (e.metaKey && e.altKey && ['i', 'j', 'c', 'u'].includes(key)) ||
+                    (e.metaKey && ['u', 's', 'p'].includes(key))
+                ) {
+                    e.preventDefault();
+                }
+            });
+        })();
+    </script>
     
     <!-- Medidas de Seguridad HTTP / CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob: https://i.postimg.cc https://images.unsplash.com https://placehold.co; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com; img-src 'self' data: blob: https://i.postimg.cc https://images.unsplash.com https://placehold.co https://hits.sh; connect-src 'self' https://hits.sh; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me;">
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta name="referrer" content="strict-origin-when-cross-origin">
 
@@ -17,6 +46,13 @@
     
     <!-- Ícono para iOS y Android -->
     <link rel="apple-touch-icon" href="https://i.postimg.cc/bN7gPqK5/Whats-App-Image-2026-11-04-at-9-13-31-PM-(1).jpg">
+
+    <!-- Meta etiquetas Open Graph para compartir en WhatsApp, Facebook, etc. -->
+    <meta property="og:title" content="Restaurante El Portal - Sabor y tradición desde 1999">
+    <meta property="og:description" content="Conoce nuestra carta, cortes a la parrilla, pizzas artesanales y haz tu reserva o pedido directo por WhatsApp.">
+    <meta property="og:image" content="https://i.postimg.cc/bN7gPqK5/Whats-App-Image-2026-11-04-at-9-13-31-PM-(1).jpg">
+    <meta property="og:url" content="https://soyconectaplus.com/elportalpuertoberrio/">
+    <meta property="og:type" content="website">
     
     <!-- Manifest incrustado como data URI -->
     <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Restaurante%20El%20Portal%22%2C%22short_name%22%3A%22El%20Portal%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%22%2C%22background_color%22%3A%22%23111827%22%2C%22theme_color%22%3A%22%23d97706%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fi.postimg.cc%2FbN7gPqK5%2FWhats-App-Image-2026-11-04-at-9-13-31-PM-%281%29.jpg%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fjpeg%22%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fi.postimg.cc%2FbN7gPqK5%2FWhats-App-Image-2026-11-04-at-9-13-31-PM-%281%29.jpg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fjpeg%22%7D%5D%7D">
@@ -46,6 +82,9 @@
         input, textarea, select {
             -webkit-user-select: text;
             user-select: text;
+        }
+        img {
+            -webkit-user-drag: none;
         }
         .font-logo {
             font-family: 'Playfair Display', serif;
@@ -87,11 +126,11 @@
                      class="w-full h-56 object-cover object-center block"
                      onerror="this.onerror=null;this.src='https://placehold.co/1000x560/111827/FBBF24?text=El+Portal';"
                      style="clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);">
-                <div class="absolute inset-0 bg-black bg-opacity-50" style="clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);"></div>
+                <div class="absolute inset-0 bg-black bg-opacity-50 pointer-events-none" style="clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);"></div>
             </div>
         </div>
 
-        <div class="relative -mt-16 z-10">
+        <div class="relative -mt-16 z-10 pointer-events-none">
             <div class="relative w-32 h-32 mx-auto z-10">
                 <div class="w-full h-full rounded-full border-4 border-amber-400 overflow-hidden bg-black shadow-xl flex items-center justify-center">
                     <img src="https://i.postimg.cc/bN7gPqK5/Whats-App-Image-2026-11-04-at-9-13-31-PM-(1).jpg" alt="Logo El Portal" class="w-full h-full object-contain p-2">
@@ -118,7 +157,7 @@
                 <div class="flex justify-around items-start mb-5">
                     <!-- Nuestro Menú -->
                     <div class="text-center w-20 group">
-                        <button id="menu-btn" type="button" class="bg-gray-800 text-amber-400 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-gray-900 shadow-md mx-auto" aria-label="Nuestro Menú">
+                        <button id="menu-btn" type="button" class="bg-gray-800 text-amber-400 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-gray-900 shadow-md mx-auto cursor-pointer" aria-label="Nuestro Menú">
                             <i class="fas fa-book-open"></i>
                         </button>
                         <p class="text-[11px] mt-2 text-gray-300 font-medium">La Carta</p>
@@ -157,7 +196,7 @@
                     </div>
                     <!-- Pizzas -->
                     <div class="text-center w-20 group">
-                        <button id="pizzas-btn" type="button" class="bg-gray-800 text-amber-400 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-gray-900 shadow-md mx-auto relative overflow-hidden" aria-label="Pizzas">
+                        <button id="pizzas-btn" type="button" class="bg-gray-800 text-amber-400 border border-gray-700 w-14 h-14 rounded-2xl flex items-center justify-center text-2xl transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-400 group-hover:text-gray-900 shadow-md mx-auto relative overflow-hidden cursor-pointer" aria-label="Pizzas">
                             <i class="fas fa-pizza-slice"></i>
                             <span class="absolute top-0 right-0 bg-amber-500 w-3 h-3 rounded-full border border-gray-900"></span>
                         </button>
@@ -176,7 +215,7 @@
                     </div>
                     <!-- Compartir / QR -->
                     <div class="text-center w-20 group">
-                        <button id="share-btn" type="button" class="bg-gray-800 text-gray-400 border border-gray-700 w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-gray-900 shadow-md mx-auto" aria-label="Compartir / QR">
+                        <button id="share-btn" type="button" class="bg-gray-800 text-gray-400 border border-gray-700 w-12 h-12 rounded-full flex items-center justify-center text-lg transition-all duration-300 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-gray-900 shadow-md mx-auto cursor-pointer" aria-label="Compartir / QR">
                             <i class="fas fa-share-nodes"></i>
                         </button>
                         <p class="text-[10px] mt-2 text-gray-400">Compartir</p>
@@ -185,12 +224,18 @@
             </div>
 
             <!-- Instalación PWA link -->
-            <a href="#" id="install-btn" class="cursor-pointer text-xs text-amber-500 hover:text-amber-400 hover:underline font-semibold flex justify-center items-center gap-1">
+            <button type="button" id="install-btn" class="cursor-pointer text-xs text-amber-500 hover:text-amber-400 hover:underline font-semibold inline-flex justify-center items-center gap-1">
                 <i class="fas fa-download"></i> ¿Cómo instalar nuestra app?
-            </a>
+            </button>
 
             <!-- Footer Conecta+ -->
             <div class="mt-8 pt-4 border-t border-gray-700/50 flex flex-col items-center">
+                <div class="mb-4 flex items-center gap-2 bg-gray-900/90 px-3 py-1.5 rounded-full border border-gray-700/70 shadow-inner" title="Visitas a la tarjeta">
+                    <i class="fas fa-eye text-amber-500 text-xs"></i>
+                    <span class="text-xs text-gray-300 font-semibold">Visitas:</span>
+                    <img src="https://hits.sh/soyconectaplus.com/elportalpuertoberrio.svg?style=flat-square&label=&color=d97706&labelColor=111827" alt="Contador de Visitas" class="h-4 rounded-sm">
+                </div>
+
                 <p class="text-[10px] text-gray-400 mb-2">Este sitio fue creado por <span class="text-white font-bold tracking-wide">Conecta+</span></p>
                 <a href="https://wa.me/573125749480?text=%C2%A1Hola!%20Me%20encant%C3%B3%20la%20tarjeta%20digital%20de%20El%20Portal%20y%20quiero%20crear%20una%20para%20mi%20negocio." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center bg-gray-800 text-gray-300 text-[10px] font-semibold py-1.5 px-4 rounded-full border border-gray-600 hover:bg-gray-700 hover:text-white hover:border-gray-400 transition-all shadow-sm">
                     <i class="fab fa-whatsapp text-green-500 mr-1.5 text-sm"></i> ¡Quiero el mío!
@@ -202,23 +247,19 @@
     <!-- Popup: Compartir Mejorado (Nativo + QR + Copiar) -->
     <div id="share-popup" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4 transition-opacity">
         <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-6 max-w-xs w-full text-center relative text-white">
-            <button id="close-share-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors">&times;</button>
+            <button id="close-share-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors cursor-pointer">&times;</button>
             <h3 class="text-xl font-bold mb-1 font-logo text-amber-400">Comparte El Portal</h3>
             <p class="text-xs text-gray-400 mb-4">Escanea el código QR o envía el enlace</p>
             
-            <div id="qrcode-container" class="flex justify-center mb-4 bg-white p-3 rounded-xl mx-auto w-max shadow-inner">
-                <!-- Código QR generado dinámicamente -->
-            </div>
+            <div id="qrcode-container" class="flex justify-center mb-4 bg-white p-3 rounded-xl mx-auto w-max shadow-inner"></div>
             
-            <!-- Botón Compartir Nativo (Web Share API) -->
-            <button id="native-share-trigger" type="button" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs mb-3 flex items-center justify-center gap-2 transition-all shadow-md">
+            <button id="native-share-trigger" type="button" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs mb-3 flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
                 <i class="fas fa-paper-plane"></i> Enviar enlace por WhatsApp / Apps
             </button>
 
-            <!-- Copiar Enlace -->
             <div class="flex items-center gap-1.5 bg-gray-900 border border-gray-600 rounded-lg p-1.5">
-                <input type="text" id="share-url" class="w-full bg-transparent text-gray-300 text-xs px-2 focus:outline-none" readonly>
-                <button id="copy-url-btn" type="button" class="bg-gray-700 hover:bg-gray-600 text-amber-400 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap">
+                <input type="text" id="share-url" class="w-full bg-transparent text-gray-300 text-xs px-2 focus:outline-none cursor-pointer" readonly>
+                <button id="copy-url-btn" type="button" class="bg-gray-700 hover:bg-gray-600 text-amber-400 px-3 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap cursor-pointer">
                     <i class="fas fa-copy mr-1"></i> Copiar
                 </button>
             </div>
@@ -229,7 +270,7 @@
     <!-- Popup: Formulario de Pedido -->
     <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-85 backdrop-blur-sm flex items-center justify-center z-[60] hidden p-4">
         <div class="bg-gray-800 border-2 border-amber-500 rounded-2xl shadow-2xl p-6 max-w-sm w-full relative text-white max-h-[92vh] overflow-y-auto menu-scrollbar">
-            <button id="close-order-modal-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors">&times;</button>
+            <button id="close-order-modal-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors cursor-pointer">&times;</button>
             
             <div class="text-center mb-4">
                 <span class="inline-block bg-amber-500/20 text-amber-400 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-1">Pedido Directo</span>
@@ -281,7 +322,7 @@
 
                 <p id="form-error-msg" class="text-xs text-red-400 hidden font-medium">Por favor completa los campos obligatorios correctamente.</p>
 
-                <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg mt-2">
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all shadow-lg mt-2 cursor-pointer">
                     <i class="fab fa-whatsapp text-lg"></i> Enviar Pedido a WhatsApp
                 </button>
             </form>
@@ -291,21 +332,18 @@
     <!-- Popup: Menú -->
     <div id="menu-popup" class="fixed inset-0 bg-gradient-to-b from-gray-900 to-black z-50 hidden p-4 text-white">
         <div class="w-full h-full max-w-lg mx-auto relative flex flex-col">
-            <!-- Header del menú -->
             <div class="flex justify-between items-center py-4 px-2 border-b border-gray-800 shrink-0">
                 <div class="flex items-center gap-2">
                     <i class="fas fa-leaf text-amber-500 text-xl"></i>
                     <h2 class="font-logo text-2xl text-white tracking-wide">CARTA EL PORTAL</h2>
                 </div>
-                <button id="close-menu-popup-btn" type="button" class="text-3xl text-gray-400 hover:text-amber-500 transition-colors z-10 w-10 h-10 flex items-center justify-center rounded-full bg-gray-800">&times;</button>
+                <button id="close-menu-popup-btn" type="button" class="text-3xl text-gray-400 hover:text-amber-500 transition-colors z-10 w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 cursor-pointer">&times;</button>
             </div>
 
-            <!-- Contenido deslizable del menú -->
             <div class="overflow-y-auto menu-scrollbar flex-grow py-6 pr-2">
                 <p class="text-sm text-gray-400 mb-6 px-2">Descubre nuestra exquisita selección. ¡Sabor y tradición desde 1999!</p>
                 
                 <div class="space-y-8 px-2">
-                    
                     <!-- Entradas -->
                     <div>
                         <h3 class="text-xl font-bold font-logo text-amber-500 border-b border-gray-700 pb-2 mb-4">Entradas</h3>
@@ -605,11 +643,10 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                <!-- Botón CTA final en el menú que abre el formulario general -->
+
                 <div class="mt-10 mb-8 text-center px-2">
-                    <button type="button" data-item="Pedido de la Carta El Portal" data-price="" class="open-order-form-btn block w-full bg-amber-500 text-gray-900 font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+                    <button type="button" data-item="Pedido de la Carta El Portal" data-price="" class="open-order-form-btn block w-full bg-amber-500 text-gray-900 font-bold py-4 px-6 rounded-xl text-lg transition-all duration-300 hover:bg-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.4)] cursor-pointer">
                         <i class="fab fa-whatsapp mr-2 text-xl"></i> ¡Hacer Pedido Ahora!
                     </button>
                 </div>
@@ -620,7 +657,7 @@
     <!-- Popup: Instalación PWA -->
     <div id="install-popup" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4 transition-opacity">
         <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-6 max-w-sm w-full relative text-white">
-            <button id="close-install-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors">&times;</button>
+            <button id="close-install-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-white transition-colors cursor-pointer">&times;</button>
             
             <div class="text-center mb-5">
                 <div class="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center text-gray-900 mx-auto mb-3">
@@ -654,7 +691,7 @@
     <div id="pizzas-popup" class="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4 transition-opacity">
         <div class="bg-gray-800 border-2 border-amber-500 rounded-3xl shadow-[0_0_30px_rgba(245,158,11,0.3)] p-1 max-w-sm w-full relative text-white overflow-hidden flex flex-col max-h-[90vh]">
             
-            <button id="close-pizzas-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-white drop-shadow-md hover:text-amber-400 z-10 bg-black bg-opacity-40 w-8 h-8 rounded-full flex items-center justify-center transition-colors">&times;</button>
+            <button id="close-pizzas-popup-btn" type="button" class="absolute top-3 right-4 text-2xl text-white drop-shadow-md hover:text-amber-400 z-10 bg-black bg-opacity-40 w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer">&times;</button>
             
             <div class="bg-gray-900 rounded-3xl p-5 relative overflow-y-auto menu-scrollbar flex-1">
                 <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-600 rounded-full blur-3xl opacity-20"></div>
@@ -668,14 +705,13 @@
                 </div>
                 
                 <div class="space-y-4">
-                    
                     <div class="bg-gray-800 rounded-xl p-4 border border-gray-700 flex flex-col gap-2 relative overflow-hidden">
                         <div class="flex justify-between items-start">
                             <h4 class="font-bold text-md text-amber-400 font-logo leading-tight">BURRATA</h4>
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$47.880</span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base napolitana, queso mozzarella, salami, chorizo español, aceitunas, jamón serrano, tomates caramelizados, albahaca y una espectacular burrata.</p>
-                        <button type="button" data-item="Pizza BURRATA" data-price="$47.880" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza BURRATA" data-price="$47.880" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -686,7 +722,7 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$47.880</span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base salsa Alfredo, queso mozzarella, queso azul, uchuvas caramelizadas, almendras laminadas, albahaca, jamón serrano, queso ricota.</p>
-                        <button type="button" data-item="Pizza PORTAL PARADISE" data-price="$47.880" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza PORTAL PARADISE" data-price="$47.880" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -697,7 +733,7 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$47.400 <span class="text-[10px] block text-center font-normal">(IVA INCLUIDO)</span></span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base napolitana, queso mozzarella, camarones, palmitos, cebollas, atún, pimentón, champiñones.</p>
-                        <button type="button" data-item="Pizza ATLANTÍS" data-price="$47.400" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza ATLANTÍS" data-price="$47.400" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -708,7 +744,7 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$45.000 <span class="text-[10px] block text-center font-normal">(IVA INCLUIDO)</span></span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base pesto, queso mozzarella, trozos de tomates, maíz tierno, chorizo, salami, aguacate en julianas, jalapeños.</p>
-                        <button type="button" data-item="Pizza PORTAL MÉX" data-price="$45.000" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza PORTAL MÉX" data-price="$45.000" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -719,7 +755,7 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$41.880</span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base napolitana, queso mozzarella, tocineta picada sobre la pizza bañada con salsa BBQ, perfumada con Jack Daniel's & Honey, queso ricota.</p>
-                        <button type="button" data-item="Pizza PORTAL BACON" data-price="$41.880" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza PORTAL BACON" data-price="$41.880" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -730,7 +766,7 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$38.280</span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base napolitana, queso mozzarella, trozos de pollo a la parrilla, champiñones.</p>
-                        <button type="button" data-item="Pizza POLLO CON CHAMPIÑONES" data-price="$38.280" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza POLLO CON CHAMPIÑONES" data-price="$38.280" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -741,7 +777,7 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$34.200 <span class="text-[10px] block text-center font-normal">(IVA INCLUIDO)</span></span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base napolitana, queso mozzarella, abundantes trozos de piña confitada y mucho jamón.</p>
-                        <button type="button" data-item="Pizza HAWAIANA" data-price="$34.200" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza HAWAIANA" data-price="$34.200" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -752,7 +788,7 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$33.480 <span class="text-[10px] block text-center font-normal">(IVA INCLUIDO)</span></span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base napolitana, queso mozzarella, salami, tomates cherry.</p>
-                        <button type="button" data-item="Pizza NAPOLITANA" data-price="$33.480" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza NAPOLITANA" data-price="$33.480" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
@@ -763,12 +799,11 @@
                             <span class="text-white text-xs font-bold bg-amber-600 px-2 py-1 rounded whitespace-nowrap">$31.080</span>
                         </div>
                         <p class="text-gray-400 text-xs leading-snug">Base napolitana, queso mozzarella, tomates cherry, albahaca.</p>
-                        <button type="button" data-item="Pizza MARGARITA" data-price="$31.080" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full">
+                        <button type="button" data-item="Pizza MARGARITA" data-price="$31.080" class="open-order-form-btn mt-2 inline-block bg-green-600 text-white font-bold py-2 px-4 rounded-lg text-xs text-center transition-all hover:bg-green-500 w-full cursor-pointer">
                             <i class="fab fa-whatsapp mr-1"></i> Hacer pedido
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -777,16 +812,14 @@
         (function() {
             'use strict';
 
-            // --- Utilidades de Seguridad (Sanitización de texto) ---
             const sanitizeText = (str) => {
                 if (typeof str !== 'string') return '';
                 return str.replace(/[<>"'`\\]/g, '').trim();
             };
 
             const WHATSAPP_NUMBER = '573217780311';
-            const SHARE_URL = 'https://conectabp.github.io/elportalpuertoberrio/';
+            const SHARE_URL = 'https://soyconectaplus.com/elportalpuertoberrio/';
 
-            // --- Manejo de Popups ---
             const openPopup = (popupId) => {
                 const el = document.getElementById(popupId);
                 if (el) el.classList.remove('hidden');
@@ -796,7 +829,6 @@
                 if (el) el.classList.add('hidden');
             };
 
-            // Cerrar modales con tecla Escape
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     ['share-popup', 'menu-popup', 'install-popup', 'pizzas-popup', 'order-modal'].forEach(closePopup);
@@ -836,14 +868,16 @@
                 copyFeedback.classList.add('hidden');
                 
                 qrcodeContainer.innerHTML = '';
-                new QRCode(qrcodeContainer, {
-                    text: SHARE_URL,
-                    width: 150,
-                    height: 150,
-                    colorDark : "#111827",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
+                if (typeof QRCode === 'function') {
+                    new QRCode(qrcodeContainer, {
+                        text: SHARE_URL,
+                        width: 150,
+                        height: 150,
+                        colorDark : "#111827",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+                }
                 
                 openPopup(sharePopup);
             });
@@ -1005,13 +1039,6 @@
             document.getElementById('close-pizzas-popup-btn').addEventListener('click', () => closePopup(pizzasPopup));
             document.getElementById(pizzasPopup).addEventListener('click', (e) => {
                 if (e.target.id === pizzasPopup) closePopup(pizzasPopup);
-            });
-
-            // --- Protección básica contra menú contextual en imágenes ---
-            document.addEventListener('contextmenu', (e) => {
-                if (e.target.tagName === 'IMG') {
-                    e.preventDefault();
-                }
             });
 
             // --- Lógica PWA: Service Worker ---
